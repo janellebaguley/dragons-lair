@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios';
 import './Container.css'
 import Treasure from '../Treasure'
 
@@ -18,15 +19,27 @@ export default class Container extends Component {
   }
 
   getDragonTreasure() {
-    // axios GET to /api/treasure/dragon here
+    axios.get('/api/treasure/dragon')
+    .then(treasure => {
+      this.setState({treasures: {...this.state.treasures, dragon: treasure.data}})
+    })
+    .catch(err => console.log(err))
   }
 
   getAllTreasure() {
-    // axios GET to /api/treasure/all here
+    axios.get('/api/treasure/all')
+    .then(treasure => {
+      this.setState({treasures: {...this.state.treasures}, all: treasure.data})
+    })
+    .catch(err => console.log(err))
   }
 
   getMyTreasure() {
-    // axios GET to /api/treasure/user here
+    axios.get('/api/treasure/user')
+    .then(treasure => {
+      this.setState({treasures: {...this.state.treasures}, all: treasure.data})
+    })
+    .catch(err => console.log(err))
   }
 
   addMyTreasure(newMyTreasure) {

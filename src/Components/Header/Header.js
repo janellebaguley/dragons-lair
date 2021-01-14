@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './Header.css';
 
 export default class Header extends Component {
@@ -28,15 +29,36 @@ export default class Header extends Component {
   }
 
   login() {
-    // axios POST to /auth/login here
+    const {username, password} = this.state;
+    axios.post('/api/login', {username, password})
+    .then(user => {
+      this.props.updateUser(user.data)
+      this.setState({username: '', password: ''})
+    })
+    .catch(err =>{
+      this.setState({username: '', password: ''})
+      alert(err.response.request.response)
+    })
   }
 
   register() {
-    // axios POST to /auth/register here
+    axios.post('/api/register', {username: this.state.username, password: this.state.password, isAdmin: this.state.isAdmin})
+    .then(user => {
+      this.setState({username: '', password: ''})
+      this.props.updateUser(user.data)
+    })
+    .catch(err => {
+      this.setState({username: '', password: ''})
+      alert(err.response.request.response)
+    })
   }
 
   logout() {
-    // axios GET to /auth/logout here
+    axios.get('/api/logout')
+    .then(() => {
+      this.props.updateUser({})
+    })
+    .catch(err => console.log(err))
   }
 
   render() {
